@@ -13,42 +13,49 @@ def merge_sort(list, startIndex = 0, endIndex = None):
     if len(list) <= 1:
         return list
     
+    #once we get down to a single item we need to return it in a list
+    #unclear to me if this solves the runtime issue
+    #tradeoff seems to be creating a bunch of little arrays
+    if startIndex == endIndex:
+        sublist = []
+        sublist.append(list[startIndex])
+        return sublist
+    
     if endIndex == None:
         endIndex = len(list) -1
     
-    midpoint = (endIndex - startIndex) // 2
+    midpoint = (endIndex - startIndex) // 2 + startIndex
     
     #as long as there are more than 1 items in the sublist, split again
-    #REVIEW THIS SECTION - ONCE THE SMALLEST LIST IS SORTED HOW TO WE ADD VALUES TO IT
-    if startIndex < midpoint:
-        merge_sort(list, startIndex, midpoint)
-    if midpoint + 1 < endIndex:
-        merge_sort(list, midpoint + 1, endIndex)
+    if startIndex <= midpoint:
+        leftList = merge_sort(list, startIndex, midpoint)
+        #once we have a viable list update the start position
+        #startIndex += len(leftList)
+    if midpoint + 1 <= endIndex:
+        rightList = merge_sort(list, midpoint + 1, endIndex)
     
-    #handle the merge
-    leftIndex = startIndex
-    rightIndex = midpoint + 1
+    #Handle the sort and merge for sublists
     sortedList = []
-
-    #compare values in the right and left hand side and add to the sortedArray
-    while leftIndex <= midpoint and rightIndex <= endIndex:
-        if list[leftIndex] < list[rightIndex]:
-            sortedList.append(list[leftIndex])
+    leftIndex = 0
+    rightIndex = 0
+    while leftIndex < len(leftList) and rightIndex < len(rightList):
+        leftVal = leftList[leftIndex]
+        rightVal = rightList[rightIndex]
+        if leftVal < rightVal:
+            sortedList.append(leftVal)
             leftIndex += 1
         else:
-            sortedList.append(list[rightIndex])
+            sortedList.append(rightVal)
             rightIndex += 1
-
-    #add in any remaining items from the longer list
-    while leftIndex <= midpoint:
-        sortedList.append(list[leftIndex])
+    while leftIndex < len(leftList):
+        leftVal = leftList[leftIndex]
+        sortedList.append(leftVal)
         leftIndex += 1
-    while rightIndex <= endIndex:
-        sortedList.append(list[rightIndex])
+    while rightIndex < len(rightList):
+        rightVal = rightList[rightIndex]
+        sortedList.append(rightVal)
         rightIndex += 1
-
     return sortedList
-    
 
 
 def verify_sorted(list):
@@ -61,7 +68,8 @@ def verify_sorted(list):
 
     return list[0] < list[1] and verify_sorted(list[1:])
 
-mylist = [5, 1, 3]
+mylist = [3, 1, 14, 5, 6, 4]
 sortlist = merge_sort(mylist)
 print(verify_sorted(mylist))
 print(verify_sorted(sortlist))
+print(sortlist)
