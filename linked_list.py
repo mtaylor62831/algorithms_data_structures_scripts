@@ -35,7 +35,7 @@ class LinkedList:
             current = current.next_node
         return count
     
-    def prepend(self, data):
+    def add(self, data):
         '''
         Adds a new node containing data at the start of the list.
         This takes O(1) time (constant time).

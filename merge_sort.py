@@ -38,6 +38,7 @@ def merge(left, right):
     Returns a new merged list
  
     Runs in O(n) time. For a list of size n, there are n merge steps.
+    Space complexity is O(n).
     """
 
     sortedList = []
