@@ -6,6 +6,7 @@ def merge_sort(linked_list):
     + Recursively divide linked list into sub lists containing one node
     + Repeatedly merge the sublists to produce sorted lists until only one remains.
     Returns a sorted linked list.
+    Runs in O(kn log n) time
     '''
     if linked_list.size() == 1:
         return linked_list
@@ -28,6 +29,8 @@ def split(linked_list):
     else:
         size = linked_list.size()
         midpoint = size//2
+        #RUNTIME IMPACT - node at index runs in k time where k is the size of the list up to the midpoint
+        #this means we have the same k O(n log n) runtime
         midpoint_node = linked_list.node_at_index(midpoint-1)
         left_half = linked_list
         #create a new Linked list and assign the node after the midpoint to be the head
@@ -78,3 +81,16 @@ def merge(left, right):
                 current.next_node = left_head
                 #move left head to next node
                 left_head = left_head.next_node
+            #if data on the left is greater than the right, set current to right node
+            else:
+                current.next_node = right_head
+                right_head = right_head.next_node
+        #Move current to next node
+            current = current.next_node
+    #Discard dummy head and set first merged node as head
+    head = merged.head.next_node
+    merged.head = head
+
+    return merged 
+
+ 
